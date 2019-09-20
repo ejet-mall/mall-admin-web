@@ -15,8 +15,7 @@
           style="float: right;margin-right: 15px"
           @click="handleResetSearch()"
           size="small">
-          重置
-        </el-button>
+          重置        </el-button>
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
@@ -29,6 +28,7 @@
               clearable
               v-model="selectProductCateValue"
               :props="optionDefaultProps"
+              :show-all-levels="false"
               :options="productCateOptions">
             </el-cascader>
           </el-form-item>

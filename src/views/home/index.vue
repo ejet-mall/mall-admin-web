@@ -98,7 +98,7 @@
               <span style="float: right" class="color-danger">(10)</span>
             </div>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">新缺货登记</span>
               <span style="float: right" class="color-danger">(10)</span>
@@ -109,7 +109,7 @@
               <span class="font-medium">待处理退款申请</span>
               <span style="float: right" class="color-danger">(10)</span>
             </div>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8">
@@ -124,12 +124,12 @@
               <span style="float: right" class="color-danger">(10)</span>
             </div>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">广告位即将到期</span>
               <span style="float: right" class="color-danger">(10)</span>
             </div>
-          </el-col>
+          </el-col> -->
         </el-row>
       </div>
     </div>

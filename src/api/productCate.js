@@ -29,6 +29,13 @@ export function updateProductCate(id,data) {
     data:data
   })
 }
+//获取所有分类平行结构
+export function getAllCate(){
+  return request({
+    url:'/productCategory/list/withArray',
+    method:'get'
+  })
+}
 
 export function getProductCate(id) {
   return request({

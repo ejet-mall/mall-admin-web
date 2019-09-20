@@ -9,6 +9,7 @@
     <product-info-detail
       v-show="showStatus[0]"
       v-model="productParam"
+      :cateList="cateList"
       :is-edit="isEdit"
       @nextStep="nextStep">
     </product-info-detail>
@@ -41,7 +42,7 @@
   import ProductAttrDetail from './ProductAttrDetail';
   import ProductRelationDetail from './ProductRelationDetail';
   import {createProduct,getProduct,updateProduct} from '@/api/product';
-
+  import {getAllCate} from '@/api/productCate'
   const defaultProductParam = {
     albumPics: '',
     brandId: null,
@@ -116,16 +117,27 @@
       return {
         active: 0,
         productParam: Object.assign({}, defaultProductParam),
-        showStatus: [true, false, false, false]
+        showStatus: [true, false, false, false],
+        cateList:[]
       }
     },
     created(){
-      if(this.isEdit){
-        getProduct(this.$route.query.id).then(response=>{
-          //console.log("获取详情："+JSON.stringify(response.data))
-          this.productParam=response.data;
-        });
-      }
+        //获取所有分类
+        getAllCate().then(res=>{
+          this.cateList = res.data
+          if(this.isEdit){
+            //获取商品详情
+            getProduct(this.$route.query.id).then(response=>{
+            let obj = Object.assign({}, response.data)
+            const cates = this.cateList.slice()
+            let cate2 = cates.filter(item=>item.id === obj.productCategoryId)[0]
+            let cate1 = cates.filter(item=>item.id === cate2.parentId)[0]
+            obj.parentId = cate1.parentId
+            obj.cateParentId = cate2.parentId
+            this.productParam = Object.assign({}, obj);
+            });
+          }
+        })
     },
     methods: {
       hideAll() {

@@ -77,6 +77,10 @@
             </el-button>
             <el-button size="mini"
                        type="text"
+                       @click="handleEdit(scope.$index, scope.row)">编辑
+            </el-button>
+            <el-button size="mini"
+                       type="text"
                        @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>

@@ -73,17 +73,20 @@
     name: "ProductInfoDetail",
     props: {
       value: Object,
+      cateList:{
+        type:Array,
+        default:[]
+      },
       isEdit: {
         type: Boolean,
         default: false
       }
     },
     data() {
-      console.log("data:ccc:"+JSON.stringify(this.value))
       return {
         hasEditCreated:false,
         //选中商品分类的值
-        selectProductCateValue: [],
+        selectProductCateValue: [],//3,48,285
         productCateOptions: [],
         optionDefaultProps: {
           value: 'id',
@@ -91,7 +94,7 @@
           children: 'children',
           //multiple: true, 
           //可选择任意节点
-          checkStrictly: true 
+          checkStrictly: false 
         },
         brandOptions: [],
         rules: {
@@ -119,6 +122,7 @@
         return this.value.id;
       }
     },
+    
     watch: {
       productId:function(newValue){
         if(!this.isEdit)return;
@@ -127,15 +131,17 @@
         this.handleEditCreated();
       },
       selectProductCateValue: function (newValue) {
-        console.log("selectProductCateValue:"+newValue)
-        console.log("selectProductCateValue:"+JSON.stringify(this.value))
         if (newValue != null && newValue.length>0) {
-          this.value.productCategoryId = newValue[1];
-          this.value.productCategoryName = this.getCateNameById(this.value.productCategoryId);
+          //console.log(JSON.stringify("分类："+this.cateList))
+          let cate = this.cateList.filter(item=>item.id === newValue[newValue.length-1])[0]
+          this.value.productCategoryId = cate.id
+          this.value.productCategoryName = cate.name;
         } else {
           this.value.productCategoryId = null;
           this.value.productCategoryName=null;
         }
+        console.log("this.value.productCategoryId:"+this.value.productCategoryId)
+        console.log("this.value.productCategoryName:"+this.value.productCategoryName)
       }
       
     },
@@ -143,6 +149,7 @@
       //处理编辑逻辑
       handleEditCreated(){
         if(this.value.productCategoryId!=null){
+          this.selectProductCateValue.push(this.value.parentId);
           this.selectProductCateValue.push(this.value.cateParentId);
           this.selectProductCateValue.push(this.value.productCategoryId);
         }
@@ -152,7 +159,6 @@
         fetchListWithChildren().then(response => {
           let list = response.data;
           this.productCateOptions = this.formatTreeData(list);
-          console.log("getProductCateList:"+JSON.stringify(this.productCateOptions))
         });
       },
       // 递归方法
@@ -179,19 +185,26 @@
           }
         });
       },
-      getCateNameById(id){
-        console.log(this.productCateOptions)
-        let name=null;
-        for(let i=0;i<this.productCateOptions.length;i++){
-          for(let j=0;i<this.productCateOptions[i].children.length;j++){
-            if(this.productCateOptions[i].children[j].value===id){
-              name=this.productCateOptions[i].children[j].label;
-              return name;
-            }
-          }
-        }
-        return name;
-      },
+      // getCateNameById(id){
+      //   console.log("分类："+id)
+      //  // console.log(JSON.stringify(this.productCateOptions))
+      //   let name=null;
+      //   for(let i=0;i<this.productCateOptions.length;i++){
+      //     for(let j=0;i<this.productCateOptions[i].children.length;j++){
+      //       if(this.productCateOptions[i].children[j] !== undefined && this.productCateOptions[i].children[j].value===id){
+      //         name=this.productCateOptions[i].children[j].label;
+      //         console.log("取到的name："+name)
+      //         return name;
+      //       }
+      //     }
+      //   }
+      //   return name
+        
+        
+        // let current = this.productCateOptions.filter(item=>item.id === id)
+        // console.log(JSON.stringify(current))
+        // return current.name;
+      // },
       handleNext(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {

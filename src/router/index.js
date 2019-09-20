@@ -138,6 +138,9 @@ export const constantRouterMap = [
         meta: {title: '编辑品牌'},
         hidden: true
       }
+
+      
+
     ]
   },
   {
@@ -301,6 +304,59 @@ export const constantRouterMap = [
       }
     ]
   },
+
+
+  //专题
+  {
+    path:'/cms',
+    component: Layout,
+    redirect: '/cms/subject',
+    name: 'cms',
+    meta: {title: '专题', icon: 'subject'},
+    children: [{
+      path: 'subject',
+      name: 'subject',
+      component: () => import('@/views/cms/subject/index'),
+      meta: {title: '专题列表', icon: 'subject-list'}
+    },
+      // {
+      //   path: 'addSubject',
+      //   name: 'addSubject',
+      //   component: () => import('@/views/cms/subject/add'),
+      //   meta: {title: '添加专题', icon: 'subject-add'}
+      // },
+      // {
+      //   path: 'updateSubject',
+      //   name: 'updateSubject',
+      //   component: () => import('@/views/cms/subject/update'),
+      //   meta: {title: '修改专题', icon: 'subject-add'},
+      //   hidden: true
+      // },
+      
+      {
+        path: 'subjectCate',
+        name: 'subjectCate',
+        component: () => import('@/views/cms/subjectCate/index'),
+        meta: {title: '专题分类', icon: 'subject-cate'}
+      },
+      {
+        path: 'addSubjectCate',
+        name: 'addSubjectCate',
+        component: () => import('@/views/cms/subjectCate/add'),
+        meta: {title: '添加专题分类'},
+        hidden: true
+      },
+      {
+        path: 'updateSubjectCate',
+        name: 'updateSubjectCate',
+        component: () => import('@/views/cms/subjectCate/update'),
+        meta: {title: '修改专题分类'},
+        hidden: true
+      },
+    
+    ]
+  },
+
   {path: '*', redirect: '/404', hidden: true}
 ]
 
