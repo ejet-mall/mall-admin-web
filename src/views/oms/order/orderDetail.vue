@@ -13,28 +13,32 @@
       <div class="operate-container">
         <i class="el-icon-warning color-danger" style="margin-left: 20px"></i>
         <span class="color-danger">当前订单状态：{{order.status | formatStatus}}</span>
+        <!-- 0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单' -->
         <div class="operate-button-container" v-show="order.status===0">
           <el-button size="mini" @click="showUpdateReceiverDialog">修改收货人信息</el-button>
-          <el-button size="mini">修改商品信息</el-button>
+          <!-- <el-button size="mini">修改商品信息</el-button> -->
           <el-button size="mini" @click="showUpdateMoneyDialog">修改费用信息</el-button>
-          <el-button size="mini" @click="showMessageDialog">发送站内信</el-button>
+          <!-- <el-button size="mini" @click="showMessageDialog">发送站内信</el-button> -->
+          <!-- <el-button size="mini" @click="updateOrderDialog">修改订单状态</el-button> -->
           <el-button size="mini" @click="showCloseOrderDialog">关闭订单</el-button>
-          <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
+          <el-button size="mini" @click="showMarkOrderDialog">修改及备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order.status===1">
           <el-button size="mini" @click="showUpdateReceiverDialog">修改收货人信息</el-button>
-          <el-button size="mini" @click="showMessageDialog">发送站内信</el-button>
+          <!-- <el-button size="mini" @click="updateOrderDialog">修改订单状态</el-button> -->
+          <!-- <el-button size="mini" @click="showMessageDialog">发送站内信</el-button> -->
           <el-button size="mini">取消订单</el-button>
-          <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
+          <el-button size="mini" @click="showMarkOrderDialog">修改及备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order.status===2||order.status===3">
           <el-button size="mini" @click="showLogisticsDialog">订单跟踪</el-button>
-          <el-button size="mini" @click="showMessageDialog">发送站内信</el-button>
-          <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
+          <!-- <el-button size="mini" @click="updateOrderDialog">修改订单状态</el-button> -->
+          <!-- <el-button size="mini" @click="showMessageDialog">发送站内信</el-button> -->
+          <el-button size="mini" @click="showMarkOrderDialog">修改及备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order.status===4">
           <el-button size="mini" @click="handleDeleteOrder">删除订单</el-button>
-          <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
+          <el-button size="mini" @click="showMarkOrderDialog">修改及备注订单</el-button>
         </div>
       </div>
       <div style="margin-top: 20px">
@@ -333,6 +337,18 @@
                width="40%">
       <el-form :model="markInfo"
                label-width="150px">
+
+        <el-form-item label="订单状态：">
+            <el-select v-model="markInfo.status">
+              <el-option
+                v-for="item in selectOrderOptions"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+        </el-form-item>
+        
         <el-form-item label="操作备注：">
           <el-input v-model="markInfo.note" type="textarea" rows="3">
           </el-input>
@@ -343,6 +359,7 @@
         <el-button type="primary" @click="handleMarkOrder">确 定</el-button>
       </span>
     </el-dialog>
+
     <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog>
   </div>
 </template>
@@ -378,7 +395,17 @@
         closeDialogVisible:false,
         closeInfo:{note:null,id:null},
         markOrderDialogVisible:false,
-        markInfo:{note:null},
+
+         // 0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单'
+        selectOrderOptions: [
+          { "id" : 0,   "name": "待付款"  },
+          { "id" : 1,   "name": "待发货"  },
+          { "id" : 2,   "name": "已发货"  },
+          { "id" : 3,   "name": "已完成"  },
+          { "id" : 4,   "name": "已关闭"  },
+          { "id" : 5,   "name": "无效订单"  },
+          ],
+        markInfo:{note:null, status: null},
         logisticsDialogVisible:false
       }
     },
@@ -616,7 +643,8 @@
       showMarkOrderDialog(){
         this.markOrderDialogVisible=true;
         this.markInfo.id=this.id;
-        this.closeOrder.note=null;
+        this.markInfo.status=this.order.status;
+        this.markInfo.note=this.order.note;
       },
       handleMarkOrder(){
         this.$confirm('是否要备注订单?', '提示', {
@@ -627,7 +655,7 @@
           let params = new URLSearchParams();
           params.append("id",this.markInfo.id);
           params.append("note",this.markInfo.note);
-          params.append("status",this.order.status);
+          params.append("status",this.markInfo.status);
           updateOrderNote(params).then(response=>{
             this.markOrderDialogVisible=false;
             this.$message({

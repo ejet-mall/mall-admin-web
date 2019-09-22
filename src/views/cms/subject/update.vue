@@ -1,11 +1,11 @@
 <template> 
-  <product-cate-detail :is-edit='true'></product-cate-detail>
+  <subject-detail :is-edit='true'></subject-detail>
 </template>
 <script>
-  import ProductCateDetail from './components/ProductCateDetail'
+  import SubjectDetail from './components/SubjectDetail'
   export default {
-    name: 'updateProductCate',
-    components: { ProductCateDetail }
+    name: 'updateSubject',
+    components: { SubjectDetail }
   }
 </script>
 <style>

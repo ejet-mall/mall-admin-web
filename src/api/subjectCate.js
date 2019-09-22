@@ -1,33 +1,47 @@
 import request from '@/utils/request'
-export function fetchListAll() {
+export function fetchList(parentId,params) {
   return request({
-    url:'/subjectCate/listAll',
-    method:'get',
-  })
-}
-
-export function fetchList(params) {
-  return request({
-    url:'/subjectCate/list',
+    url:'/subjectCategory/list',
     method:'get',
     params:params
   })
 }
-
-export function deleteSubjectCate(params) {
+export function deleteSubjectCate(id) {
   return request({
-    url:'/subjectCate/delete',
-    method:'get',
-    params:params
+    url:'/subjectCategory/delete/'+id,
+    method:'post'
+  })
+}
+
+export function createSubjectCate(data) {
+  return request({
+    url:'/subjectCategory/create',
+    method:'post',
+    data:data
+  })
+}
+
+export function updateSubjectCate(id,data) {
+  return request({
+    url:'/subjectCategory/update/'+id,
+    method:'post',
+    data:data
   })
 }
 
 
-export function updateShowStatus(params) {
+export function updateShowStatus(data) {
   return request({
-    url:'/subjectCate/updateShowStatus',
+    url:'/subjectCategory/update/showStatus',
+    method:'post',
+    data:data
+  })
+}
+
+export function getSubjectCate(id) {
+  return request({
+    url:'/subjectCategory/'+id,
     method:'get',
-    params:params
   })
 }
 

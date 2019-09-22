@@ -75,7 +75,7 @@
     }
   ];
   const defaultHomeAdvertise = {
-    name: null,
+    name: "",
     type: 1,
     pic: null,
     startTime: null,
@@ -96,7 +96,7 @@
     },
     data() {
       return {
-        homeAdvertise: null,
+        homeAdvertise: defaultHomeAdvertise,
         rules: {
           name: [
             {required: true, message: '请输入广告名称', trigger: 'blur'},

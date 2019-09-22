@@ -382,12 +382,13 @@
     },
     watch: {
       selectProductCateValue: function (newValue) {
-        if (newValue != null && newValue.length == 2) {
-          this.listQuery.productCategoryId = newValue[1];
+        // console.log(newValue)
+        // console.log(newValue.length)
+        if (newValue != null) {
+          this.listQuery.productCategoryId = newValue[newValue.length-1];
         } else {
           this.listQuery.productCategoryId = null;
         }
-
       }
     },
     filters: {

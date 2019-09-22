@@ -75,10 +75,7 @@
                        type="text"
                        @click="handleEditSort(scope.$index, scope.row)">设置排序
             </el-button>
-            <el-button size="mini"
-                       type="text"
-                       @click="handleEdit(scope.$index, scope.row)">编辑
-            </el-button>
+           
             <el-button size="mini"
                        type="text"
                        @click="handleDelete(scope.$index, scope.row)">删除
@@ -132,7 +129,7 @@
         <el-table-column label="专题名称" align="center">
           <template slot-scope="scope">{{scope.row.title}}</template>
         </el-table-column>
-        <el-table-column label="所属分类" width="160" align="center">
+        <el-table-column label="所属专题分类" width="160" align="center">
           <template slot-scope="scope">{{scope.row.categoryName}}</template>
         </el-table-column>
         <el-table-column label="添加时间" width="160" align="center">
